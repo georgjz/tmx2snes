@@ -7,6 +7,8 @@ This is a tool I wrote quickly out of laziness for loading background maps in ho
 
 I hope to integrate it into my other SNES graphic tool [Kitsune](https://github.com/georgjz/kitsune) as soon as find the time for it. It does the other half of the work: converting image files into tile/sprite and palette data for use in a SNES ROM.
 
+I admit that I shamelessly stole the code for the parser somewhere long time ago. I will attribute the original creator if I find out where I got it.
+
 ## Building
 Use `make` in combination with `clang++`. The makefile(at least on my system) only works with `clang++` at the moment. You will also need the [cimg library](http://cimg.eu).
 
