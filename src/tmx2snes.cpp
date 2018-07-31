@@ -21,7 +21,17 @@ int main(int argc, char** argv)
     // get input file name
     std::string inputFileName  { getCmdOption(tokens, "-f") };
     std::string outputFileName { getCmdOption(tokens, "-o") };
+    std::string color { getCmdOption(tokens, "-c") };
     std::string wantedTag { "<data encoding=\"csv\">" };
+
+    // check tokens
+    if( inputFileName.empty() | outputFileName.empty() | color.empty() )
+    {
+        std::cout << "Flag(s) missing! Please use all three flags: " << std::endl
+                  << "tmx2snes -f inputfile.tmx -c palettenumber -o output.vra" << std::endl;
+
+        return -1;
+    }
 
     // helper strings
     std::string line, data;
@@ -83,6 +93,10 @@ int main(int argc, char** argv)
     std::fstream outFile;
     outFile.open(outputFileName, std::ios::binary | std::ios::out);
 
+    // calculate color mask
+    uint16_t colorMask = std::stoi(color);
+    colorMask = colorMask << 10;
+
     // convert to uint16_t
     std::vector<uint16_t> snesTileMap;
     for(auto i = 0; i < tileMapData.size(); ++i)
@@ -102,6 +116,8 @@ int main(int argc, char** argv)
         // check V-flip
         if(num & 0x40000000)
             snesNum |= 0x8000;
+        // set color number
+        snesNum |= colorMask;
 
         uint8_t lower = snesNum & 0x00ff;
         uint8_t higher = snesNum >> 8;
